@@ -32,12 +32,16 @@ import static meet.mobile.utils.Utils.isLandscape;
  */
 public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageCard> {
 
+	public interface OnImageClickListener {
+		void onClick(int position, Image image);
+	}
+
 	final List<Image> images = new ArrayList<>();
 	final TimeInterpolator interpolator = new DecelerateInterpolator(2);
 	final SparseBooleanArray animatedPositions = new SparseBooleanArray();
 	final Point windowSize = new Point();
 	final DisplayImageOptions options;
-
+	private OnImageClickListener clickListener;
 	Context context;
 	int lastPosition = 0;
 
@@ -50,6 +54,10 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageCard>
 
 	}
 
+	public void setClickListener(OnImageClickListener clickListener) {
+		this.clickListener = clickListener;
+	}
+
 	@Override
 	public ImageCard onCreateViewHolder(ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(this.context).inflate(R.layout.image_card, parent, false);
@@ -60,6 +68,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageCard>
 	public void onBindViewHolder(final ImageCard holder, int position) {
 		holder.artist.setText(getItem(position).getArtist());
 		holder.title.setText(getItem(position).getTitle());
+		holder.clickListener = this.clickListener;
 		ImageLoader.getInstance().cancelDisplayTask(holder.image);
 		ImageLoader.getInstance().displayImage(getItem(position).getDisplayByType(Image.DisplaySizeType.PREVIEW).getUri(), holder.image, options);
 
@@ -134,7 +143,7 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageCard>
 		holder.itemView.setRotationX(45.0f);
 	}
 
-	protected static class ImageCard extends RecyclerView.ViewHolder {
+	protected class ImageCard extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 		@InjectView(R.id.image)
 		ImageView image;
@@ -142,10 +151,21 @@ public class ImagesAdapter extends RecyclerView.Adapter<ImagesAdapter.ImageCard>
 		TextView artist;
 		@InjectView(R.id.title)
 		TextView title;
+		OnImageClickListener clickListener;
 
 		public ImageCard(View itemView) {
 			super(itemView);
 			ButterKnife.inject(this, itemView);
+			itemView.setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View v) {
+			if (clickListener != null) {
+				int pos = getPosition();
+				clickListener.onClick(pos, getItem(pos));
+			}
+
 		}
 	}
 }

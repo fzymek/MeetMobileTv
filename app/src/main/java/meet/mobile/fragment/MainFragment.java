@@ -208,6 +208,9 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
 		}
 
 		adapter = new ImagesAdapter(getActivity(), ((BaseActivity) getActivity()).getDisplayImageOptions());
+		adapter.setClickListener((position, image) -> {
+			Toast.makeText(getActivity(), "Clicked on item at position: "+ position, Toast.LENGTH_SHORT).show();
+		});
 		recyclerView.setAdapter(adapter);
 		if (hasApi(Build.VERSION_CODES.LOLLIPOP)) {
 			recyclerView.addItemDecoration(getItemDecoration());
