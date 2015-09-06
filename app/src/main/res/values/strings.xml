@@ -7,5 +7,8 @@
 	<string name="title">"Title: "</string>
 	<string name="artist">"Artist: "</string>
 	<string name="action_staggered_grid">Use fancy grid</string>
+	<string name="details_author">Author:</string>
+	<string name="lorem_ipsum_long">"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</string>
+	<string name="details_date_created">Date created:</string>
 
 </resources>

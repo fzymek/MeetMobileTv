@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -208,9 +209,7 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
 		}
 
 		adapter = new ImagesAdapter(getActivity(), ((BaseActivity) getActivity()).getDisplayImageOptions());
-		adapter.setClickListener((position, image) -> {
-			Toast.makeText(getActivity(), "Clicked on item at position: "+ position, Toast.LENGTH_SHORT).show();
-		});
+		adapter.setClickListener(this::handleImageClicked);
 		recyclerView.setAdapter(adapter);
 		if (hasApi(Build.VERSION_CODES.LOLLIPOP)) {
 			recyclerView.addItemDecoration(getItemDecoration());
@@ -219,8 +218,11 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
 
 
 	private void setupActionBar() {
-		((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-		((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+		ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+		if (supportActionBar != null) {
+			supportActionBar.setDisplayShowHomeEnabled(true);
+			supportActionBar.setDisplayHomeAsUpEnabled(false);
+		}
 	}
 
 	private void handleSettingsAction() {
@@ -239,18 +241,28 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
 				if (isEnabled) {
 					item.setChecked(false);
 					setStaggeredGridEnabled(false)
-						.subscribeOn(Schedulers.io())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe((Void v) -> recyclerView.setLayoutManager(gridLayoutManager));
+							.subscribeOn(Schedulers.io())
+							.observeOn(AndroidSchedulers.mainThread())
+							.subscribe((Void v) -> recyclerView.setLayoutManager(gridLayoutManager));
 				} else {
 					item.setChecked(true);
 					setStaggeredGridEnabled(true)
-						.subscribeOn(Schedulers.io())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe((Void v) -> recyclerView.setLayoutManager(staggeredLayoutManager));
+							.subscribeOn(Schedulers.io())
+							.observeOn(AndroidSchedulers.mainThread())
+							.subscribe((Void v) -> recyclerView.setLayoutManager(staggeredLayoutManager));
 				}
 			});
 
+	}
+
+	private void handleImageClicked(int position, Image image) {
+
+		DetailsFragment details = DetailsFragment.newInstance(image);
+		getFragmentManager().beginTransaction()
+				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+				.replace(R.id.content_frame, details, "details")
+				.addToBackStack(null)
+				.commit();
 	}
 
 	private RecyclerView.ItemDecoration getItemDecoration() {
