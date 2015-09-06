@@ -6,9 +6,34 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- tv's are not required to have touchscreen or telephony so we set those features as non required -->
+    <uses-feature android:name="android.hardware.touchscreen"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.faketouch"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.telephony"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.camera"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.bluetooth"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.nfc"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.location.gps"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.microphone"
+                  android:required="false"/>
+    <uses-feature android:name="android.hardware.sensor"
+                  android:required="false"/>
+
+    <!-- tv app makes use of leanback library -->
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+
+    <!-- tv app uses banner as 'launcher icon' -->
     <application
         android:name=".application.AdvancedRecyclerViewApplication"
         android:allowBackup="true"
+        android:banner="@mipmap/ic_launcher"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
@@ -26,6 +51,21 @@
             android:screenOrientation="sensorLandscape"
             android:name=".activity.PlayerActivity">
         </activity>
+
+        <!-- declare tv activity with LEANBACK_LAUNCHER category -->
+        <activity
+            android:name=".tv.activity.TvActivity"
+            android:label="@string/app_name"
+            android:configChanges="keyboard|keyboardHidden|navigation"
+            android:theme="@style/Theme.Leanback">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
     </application>
 
 </manifest>
