@@ -5,4 +5,11 @@
 		<!-- Customize your theme here. -->
 	</style>
 
+	<!-- Base application theme. -->
+	<style name="PlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+		<!-- Customize your theme here. -->
+	</style>
+
+
+
 </resources>

@@ -1,6 +1,7 @@
 package meet.mobile.fragment;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,6 +27,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 import meet.mobile.R;
 import meet.mobile.activity.BaseActivity;
+import meet.mobile.activity.PlayerActivity;
 import meet.mobile.model.Image;
 
 /**
@@ -101,7 +103,13 @@ public class DetailsFragment extends Fragment {
 		ImageLoader.getInstance().cancelDisplayTask(img);
 		ImageLoader.getInstance().displayImage(image.getDisplayByType(Image.DisplaySizeType.PREVIEW).getUri(), img, ((BaseActivity) getActivity()).getDisplayImageOptions());
 
-		img.setOnClickListener(view -> Toast.makeText(getActivity(), "Playing", Toast.LENGTH_SHORT).show());
+		img.setOnClickListener((view) -> playVideo());
+	}
+
+	private void playVideo() {
+		Intent playIntent = new Intent(getActivity(), PlayerActivity.class);
+		playIntent.putExtra(PlayerActivity.VIDEO_URL, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+		getActivity().startActivity(playIntent);
 	}
 
 	@NonNull
