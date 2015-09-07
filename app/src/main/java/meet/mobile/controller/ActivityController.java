@@ -20,4 +20,24 @@ public abstract class ActivityController<UI> extends CompositeSubscriptionContro
 	public void setActivity(Activity activity) {
 		this.activity = activity;
 	}
+
+	@Override
+	public void onStart() {
+
+	}
+
+	@Override
+	public void onStop() {
+
+	}
+
+	@Override
+	public void onPause() {
+
+	}
+
+	@Override
+	public void onResume() {
+
+	}
 }

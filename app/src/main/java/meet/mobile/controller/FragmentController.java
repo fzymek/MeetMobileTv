@@ -1,7 +1,7 @@
 package meet.mobile.controller;
 
 import android.app.Activity;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 
 /**
  * Created by Filip Zymek on 2014-11-05.
@@ -29,5 +29,25 @@ public abstract class FragmentController<UI> extends CompositeSubscriptionContro
 				activity.runOnUiThread(action);
 			}
 		}
+	}
+
+	@Override
+	public void onStart() {
+
+	}
+
+	@Override
+	public void onStop() {
+
+	}
+
+	@Override
+	public void onPause() {
+
+	}
+
+	@Override
+	public void onResume() {
+
 	}
 }

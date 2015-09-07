@@ -27,6 +27,7 @@ public class Image implements Parcelable {
 	String dateCreated;
 	@SerializedName("display_sizes")
 	List<DisplaySize> displaySizes;
+	private String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
 	public String getId() {
 		return id;
@@ -75,7 +76,12 @@ public class Image implements Parcelable {
 			", collectionName='" + collectionName + '\'' +
 			", dateCreated='" + dateCreated + '\'' +
 			", displaySizes=" + displaySizes +
+			", videoUrl=" + videoUrl +
 			'}';
+	}
+
+	public String getVideoUrl() {
+		return videoUrl;
 	}
 
 	public enum DisplaySizeType {
@@ -105,6 +111,7 @@ public class Image implements Parcelable {
 		dest.writeString(this.collectionName);
 		dest.writeString(this.dateCreated);
 		dest.writeList(this.displaySizes);
+		dest.writeString(this.videoUrl);
 	}
 
 	public Image() {
@@ -119,6 +126,7 @@ public class Image implements Parcelable {
 		this.dateCreated = in.readString();
 		this.displaySizes = new ArrayList<>();
 		in.readList(this.displaySizes, List.class.getClassLoader());
+		this.videoUrl = in.readString();
 	}
 
 	public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>() {
