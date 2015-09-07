@@ -1,24 +1,18 @@
 package meet.mobile.tv.controller;
 
 import android.app.Fragment;
-import android.graphics.Paint;
 import android.util.Pair;
-
-import java.util.List;
 
 import meet.mobile.R;
 import meet.mobile.config.API;
 import meet.mobile.controller.FragmentController;
-import meet.mobile.model.Image;
 import meet.mobile.model.Result;
 import meet.mobile.network.GettyImagesAPI;
-import meet.mobile.tv.TvMainUI;
+import meet.mobile.tv.ui.TvMainUI;
 import retrofit.RestAdapter;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
-import rx.observables.BlockingObservable;
 import rx.schedulers.Schedulers;
 
 /**

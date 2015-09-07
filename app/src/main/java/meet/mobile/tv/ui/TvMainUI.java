@@ -1,4 +1,4 @@
-package meet.mobile.tv;
+package meet.mobile.tv.ui;
 
 import java.util.List;
 import java.util.Map;

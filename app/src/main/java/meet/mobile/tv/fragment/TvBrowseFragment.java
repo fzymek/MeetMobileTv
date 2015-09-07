@@ -1,5 +1,6 @@
 package meet.mobile.tv.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v17.leanback.app.BrowseFragment;
 import android.support.v17.leanback.widget.ArrayObjectAdapter;
@@ -16,7 +17,8 @@ import java.util.List;
 
 import meet.mobile.R;
 import meet.mobile.model.Image;
-import meet.mobile.tv.TvMainUI;
+import meet.mobile.tv.ui.TvMainUI;
+import meet.mobile.tv.activity.VideoDetailsActivity;
 import meet.mobile.tv.adapter.ImageAdapter;
 import meet.mobile.tv.controller.TvBrowseController;
 import meet.mobile.tv.presenter.CardPresenter;
@@ -72,8 +74,10 @@ public class TvBrowseFragment extends BrowseFragment implements TvMainUI {
 	}
 
 	protected OnItemViewClickedListener getDefaultItemViewClickedListener() {
-		return (viewHolder, o, viewHolder2, row) -> {
-
+		return (viewHolder, image, viewHolder2, row) -> {
+			Intent intent = new Intent(getActivity(), VideoDetailsActivity.class);
+			intent.putExtra(VideoDetailsActivity.INTENT_EXTRA_IMAGE, (Image)image);
+			startActivity(intent);
 		};
 	}
 

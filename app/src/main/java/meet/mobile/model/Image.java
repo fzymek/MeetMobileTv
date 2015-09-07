@@ -110,7 +110,7 @@ public class Image implements Parcelable {
 		dest.writeString(this.artist);
 		dest.writeString(this.collectionName);
 		dest.writeString(this.dateCreated);
-		dest.writeList(this.displaySizes);
+		dest.writeTypedList(this.displaySizes);
 		dest.writeString(this.videoUrl);
 	}
 
@@ -125,7 +125,7 @@ public class Image implements Parcelable {
 		this.collectionName = in.readString();
 		this.dateCreated = in.readString();
 		this.displaySizes = new ArrayList<>();
-		in.readList(this.displaySizes, List.class.getClassLoader());
+		in.readTypedList(displaySizes, DisplaySize.CREATOR);
 		this.videoUrl = in.readString();
 	}
 
