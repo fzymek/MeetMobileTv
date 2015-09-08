@@ -49,25 +49,6 @@ public class MainController extends ActivityController<MainUI> implements Observ
 
 	}
 
-	@Override
-	public void onStart() {
-	}
-
-	@Override
-	public void onStop() {
-
-	}
-
-	@Override
-	public void onPause() {
-
-	}
-
-	@Override
-	public void onResume() {
-
-	}
-
 	public void loadData() {
 		Log.d("controller", "loadData");
 		ui.onLoadingStarted();

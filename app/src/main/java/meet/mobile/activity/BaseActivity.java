@@ -4,11 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import javax.inject.Inject;
 
-import meet.mobile.application.AdvancedRecyclerViewApplication;
+import meet.mobile.application.MeetMobileTvApplication;
 import meet.mobile.dagger.componentes.ApplicationComponent;
 import meet.mobile.dagger.modules.ActivityModule;
 
@@ -32,7 +31,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 	}
 
 	protected ApplicationComponent getApplicationComponent() {
-		return ((AdvancedRecyclerViewApplication)getApplication()).getApplicationComponent();
+		return ((MeetMobileTvApplication)getApplication()).getApplicationComponent();
 	}
 
 	protected ActivityModule getActivityModule() {

@@ -15,7 +15,7 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import meet.mobile.application.AdvancedRecyclerViewApplication;
+import meet.mobile.application.MeetMobileTvApplication;
 
 /**
  * Created by Filip Zymek on 2015-06-19.
@@ -23,11 +23,11 @@ import meet.mobile.application.AdvancedRecyclerViewApplication;
 @Module
 public class ApplicationModule {
 
-	private final AdvancedRecyclerViewApplication application;
+	private final MeetMobileTvApplication application;
 	private final ImageLoaderConfiguration configuration;
 	private final DisplayImageOptions options;
 
-	public ApplicationModule(AdvancedRecyclerViewApplication application) {
+	public ApplicationModule(MeetMobileTvApplication application) {
 		this.application = application;
 		configuration = new ImageLoaderConfiguration.Builder(application)
 			.memoryCache(new LruMemoryCache(getCacheMemorySize(application)))

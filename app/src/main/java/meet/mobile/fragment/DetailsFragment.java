@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -24,22 +23,21 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import meet.mobile.R;
 import meet.mobile.activity.BaseActivity;
 import meet.mobile.activity.PlayerActivity;
+import meet.mobile.controller.DetailsController;
 import meet.mobile.model.Image;
+import meet.mobile.ui.DetailsUI;
 
 /**
  * Created by Filip on 2015-09-06.
  */
-public class DetailsFragment extends Fragment {
+public class DetailsFragment extends Fragment implements DetailsUI {
 
 	private static final String TAG = DetailsFragment.class.getSimpleName();
 
-	private static final String ARG_IMAGE = "image";
-
-	private Image image;
+	public static final String ARG_IMAGE = "image";
 
 	@InjectView(R.id.play)
 	ImageView play;
@@ -52,6 +50,8 @@ public class DetailsFragment extends Fragment {
 	@InjectView(R.id.date_created)
 	TextView dateCreated;
 
+	DetailsController controller;
+
 	public static DetailsFragment newInstance(Image image) {
 		DetailsFragment fragment = new DetailsFragment();
 		Bundle args = new Bundle();
@@ -63,7 +63,13 @@ public class DetailsFragment extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		readArguments();
+		initController(savedInstanceState);
+	}
+
+	private void initController(Bundle savedInstanceState) {
+		controller = new DetailsController(this);
+		controller.initialize(this);
+		controller.restoreState(savedInstanceState);
 	}
 
 	@Nullable
@@ -76,7 +82,7 @@ public class DetailsFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		ButterKnife.inject(this, view);
-		setupDetailsView();
+		controller.loadData(getArguments());
 	}
 
 	@Override
@@ -93,27 +99,28 @@ public class DetailsFragment extends Fragment {
 		}
 	}
 
-	private void setupDetailsView() {
+	@Override
+	public void showDetails(Image image) {
 		author.setText(image.getArtist());
 		details.setText(image.getCaption());
 
-		String dateFormat = formatDateCreated();
+		String dateFormat = formatDateCreated(image);
 		dateCreated.setText(dateFormat);
 
 		ImageLoader.getInstance().cancelDisplayTask(img);
 		ImageLoader.getInstance().displayImage(image.getDisplayByType(Image.DisplaySizeType.PREVIEW).getUri(), img, ((BaseActivity) getActivity()).getDisplayImageOptions());
 
-		img.setOnClickListener((view) -> playVideo());
+		img.setOnClickListener((view) -> playVideo(image));
 	}
 
-	private void playVideo() {
+	private void playVideo(Image image) {
 		Intent playIntent = new Intent(getActivity(), PlayerActivity.class);
-		playIntent.putExtra(PlayerActivity.VIDEO_URL, "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4");
+		playIntent.putExtra(Image.INTENT_EXTRA_IMAGE, image);
 		getActivity().startActivity(playIntent);
 	}
 
 	@NonNull
-	private String formatDateCreated() {
+	private String formatDateCreated(Image image) {
 		SimpleDateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
 		SimpleDateFormat toFormat = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());
 		String dateFormat;
@@ -127,7 +134,4 @@ public class DetailsFragment extends Fragment {
 		return dateFormat;
 	}
 
-	private void readArguments() {
-		image = getArguments().getParcelable(ARG_IMAGE);
-	}
 }

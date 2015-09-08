@@ -1,31 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="meet.mobile" >
+<manifest package="meet.mobile"
+		  xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.WAKE_LOCK"/>
 
-    <application
-        android:name=".application.AdvancedRecyclerViewApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
-        <activity
-            android:name=".activity.MainActivity"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+	<!-- tv's are not required to have touchscreen or telephony so we set those features as non required -->
+	<uses-feature
+		android:name="android.hardware.touchscreen"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.faketouch"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.telephony"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.camera"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.bluetooth"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.nfc"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.location.gps"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.microphone"
+		android:required="false"/>
+	<uses-feature
+		android:name="android.hardware.sensor"
+		android:required="false"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:theme="@style/PlayerTheme"
-            android:screenOrientation="sensorLandscape"
-            android:name=".activity.PlayerActivity">
-        </activity>
-    </application>
+	<!-- tv app makes use of leanback library -->
+	<uses-feature
+		android:name="android.software.leanback"
+		android:required="false"/>
+
+	<!-- tv app uses banner as 'launcher icon' -->
+	<application
+		android:name=".application.MeetMobileTvApplication"
+		android:allowBackup="true"
+		android:banner="@mipmap/ic_launcher"
+		android:icon="@mipmap/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@style/AppTheme">
+		<activity
+			android:name=".activity.MainActivity"
+			android:label="@string/app_name">
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+
+				<category android:name="android.intent.category.LAUNCHER"/>
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".activity.PlayerActivity"
+			android:screenOrientation="sensorLandscape"
+			android:theme="@style/PlayerTheme">
+		</activity>
+
+		<!-- declare tv activity with LEANBACK_LAUNCHER category -->
+		<activity
+			android:name=".tv.activity.TvBrowseActivity"
+			android:configChanges="keyboard|keyboardHidden|navigation"
+			android:label="@string/app_name"
+			android:theme="@style/Theme.Leanback">
+
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN"/>
+				<category android:name="android.intent.category.LEANBACK_LAUNCHER"/>
+			</intent-filter>
+
+		</activity>
+
+		<activity
+			android:name=".tv.activity.TvDetailsActivity"
+			android:configChanges="keyboard|keyboardHidden|navigation"
+			android:theme="@style/Theme.Leanback"/>
+
+		<activity
+			android:name=".tv.activity.TvPlayerActivity"
+			android:configChanges="keyboard|keyboardHidden|navigation"
+			android:label="@string/title_activity_player"
+			android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+			>
+		</activity>
+
+	</application>
 
 </manifest>
