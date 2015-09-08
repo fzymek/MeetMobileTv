@@ -1,5 +1,6 @@
 package meet.mobile.dagger.componentes;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -18,5 +19,5 @@ import meet.mobile.dagger.modules.ApplicationModule;
 public interface ApplicationComponent {
 	Context getContext();
 
-	void inject(BaseActivity baseActivity);
+	void inject(Activity baseActivity);
 }

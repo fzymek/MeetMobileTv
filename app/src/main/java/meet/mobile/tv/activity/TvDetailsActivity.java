@@ -8,8 +8,7 @@ import meet.mobile.R;
 /**
  * Created by Filip on 2015-09-07.
  */
-public class VideoDetailsActivity extends Activity{
-	public static final String INTENT_EXTRA_IMAGE = "image";
+public class TvDetailsActivity extends Activity{
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

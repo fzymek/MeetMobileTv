@@ -13,6 +13,8 @@ import java.util.List;
  */
 public class Image implements Parcelable {
 
+	public static final String INTENT_EXTRA_IMAGE = "video_extra";
+
 	@SerializedName("id")
 	String id;
 	@SerializedName("caption")

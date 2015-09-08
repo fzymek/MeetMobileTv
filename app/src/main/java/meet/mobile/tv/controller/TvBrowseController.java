@@ -21,7 +21,7 @@ import rx.schedulers.Schedulers;
 public class TvBrowseController extends FragmentController<TvMainUI> implements Observer<Pair<String, Result>> {
 
 	TvMainUI ui;
-	protected RestAdapter restAdapter;
+	RestAdapter restAdapter;
 	GettyImagesAPI gettyImages;
 
 	public TvBrowseController(Fragment fragment) {
