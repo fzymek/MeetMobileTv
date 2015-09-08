@@ -21,7 +21,6 @@ public class PlayerActivity extends AppCompatActivity {
 	@InjectView(R.id.video)
 	VideoView videoView;
 
-	MediaPlayer player;
 	MediaController mediaController;
 
 	@Override

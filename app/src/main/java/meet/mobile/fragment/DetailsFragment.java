@@ -115,7 +115,7 @@ public class DetailsFragment extends Fragment implements DetailsUI {
 
 	private void playVideo(Image image) {
 		Intent playIntent = new Intent(getActivity(), PlayerActivity.class);
-		playIntent.putExtra(Image.INTENT_EXTRA_IMAGE, image);
+		playIntent.putExtra(PlayerActivity.VIDEO_URL, image.getVideoUrl());
 		getActivity().startActivity(playIntent);
 	}
 

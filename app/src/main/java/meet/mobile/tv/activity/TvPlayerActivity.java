@@ -55,7 +55,7 @@ public class TvPlayerActivity extends Activity implements SurfaceHolder.Callback
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_player);
+        setContentView(R.layout.activity_tv_player);
 
         mVideo = getIntent().getParcelableExtra(Image.INTENT_EXTRA_IMAGE);
 
