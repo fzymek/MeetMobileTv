@@ -21,6 +21,7 @@ public class CacheFragment<T> extends Fragment implements SimpleCache<T> {
         cache = new LruCache<>(3);
     }
 
+
     @Override
     public void put(Object key, T o) {
         cache.put(key, o);

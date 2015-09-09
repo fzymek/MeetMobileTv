@@ -15,5 +15,6 @@
     <string name="play">Play</string>
     <string name="watch_later">Watch Later</string>
     <string name="title_activity_player">Player</string>
+    <string name="recomendations">You may also like</string>
 
 </resources>

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="meet.mobile">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -61,7 +60,7 @@
         <activity
             android:name=".activity.PlayerActivity"
             android:screenOrientation="sensorLandscape"
-            android:theme="@style/PlayerTheme"></activity>
+            android:theme="@style/PlayerTheme" />
 
         <!-- declare tv activity with LEANBACK_LAUNCHER category -->
         <activity
@@ -87,8 +86,21 @@
             android:configChanges="keyboard|keyboardHidden|navigation"
             android:label="@string/title_activity_player"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
-            >
-        </activity>
+            ></activity>
+
+        <service
+            android:name=".tv.service.RecommendationsService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver
+            android:name=".tv.receiver.BootCompletedReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

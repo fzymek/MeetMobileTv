@@ -56,6 +56,7 @@ public class TvBrowseController extends FragmentController<TvMainUI> implements 
                         .concatMap(phrase -> Observable.just(new Pair<>(phrase, gettyImages.getImages(phrase).toBlocking().single())))
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
+                        .cache()
                         .subscribe(this)
         );
 

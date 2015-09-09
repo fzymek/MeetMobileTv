@@ -11,19 +11,25 @@ import android.support.v17.leanback.widget.ArrayObjectAdapter;
 import android.support.v17.leanback.widget.ClassPresenterSelector;
 import android.support.v17.leanback.widget.DetailsOverviewRow;
 import android.support.v17.leanback.widget.DetailsOverviewRowPresenter;
+import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
+import android.support.v17.leanback.widget.SinglePresenterSelector;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 
+import java.util.List;
+import java.util.Random;
+
 import meet.mobile.R;
-import meet.mobile.application.MeetMobileTvApplication;
 import meet.mobile.model.Image;
 import meet.mobile.tv.activity.TvPlayerActivity;
+import meet.mobile.tv.adapter.ImageAdapter;
 import meet.mobile.tv.controller.TvDetailsController;
+import meet.mobile.tv.presenter.CardPresenter;
 import meet.mobile.tv.presenter.DetailsDescriptionPresenter;
 import meet.mobile.tv.ui.TvDetailsUI;
 import meet.mobile.tv.utils.BackgroundHelper;
@@ -33,6 +39,8 @@ import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static meet.mobile.tv.utils.TvImageUtils.getTVBackgroundImageOptions;
+
 /**
  * Created by Filip on 2015-09-07.
  */
@@ -40,22 +48,32 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
 
     private static final int POSTER_WIDTH = 274;
     private static final int POSTER_HEIGHT = 274;
+
     private static final int ACTION_PLAY = 1;
     private static final int ACTION_WATCH_LATER = 2;
-    private static final DisplayImageOptions DISPLAY_OPTIONS = MeetMobileTvApplication.getTVBackgroundImageOptions().build();
+
+    private static final DisplayImageOptions DISPLAY_OPTIONS = getTVBackgroundImageOptions().build();
+    private static final String[] RECOMENDATIONS = new String[]{
+            "kangaroo",
+            "koala",
+            "jellyfish"
+    };
+
     TvDetailsController controller;
     BackgroundHelper bgHelper;
+    ColorDrawable defaultDrawable;
+    ArrayObjectAdapter rowAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initController(savedInstanceState);
-
+        defaultDrawable = new ColorDrawable(getResources().getColor(R.color.primary));
         Image image = getActivity().getIntent().getParcelableExtra(Image.INTENT_EXTRA_IMAGE);
+
+        initController(savedInstanceState);
         initBackground(image);
 
         controller.loadDetails(image);
-
     }
 
     @Override
@@ -96,13 +114,14 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
         presenterSelector.addClassPresenter(DetailsOverviewRow.class, rowPresenter);
         presenterSelector.addClassPresenter(ListRow.class, new ListRowPresenter());
 
-        ArrayObjectAdapter adapter = new ArrayObjectAdapter(presenterSelector);
-        setAdapter(adapter);
+        rowAdapter = new ArrayObjectAdapter(presenterSelector);
+        setAdapter(rowAdapter);
 
         prepareDetailsOverviewRow(image).subscribe(detailsOverviewRow -> {
             ((ArrayObjectAdapter) getAdapter()).add(detailsOverviewRow);
 
             //load recomendations
+            controller.loadRecomendations(RECOMENDATIONS[new Random().nextInt(RECOMENDATIONS.length)]);
 
         });
     }
@@ -139,7 +158,7 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
                 if (poster != null) {
                     row.setImageBitmap(getActivity(), poster);
                 } else {
-                    row.setImageDrawable(new ColorDrawable(getResources().getColor(R.color.primary)));
+                    row.setImageDrawable(defaultDrawable);
                 }
                 subscriber.onNext(row);
                 subscriber.onCompleted();
@@ -153,4 +172,17 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
         ImageSize size = new ImageSize(POSTER_WIDTH, POSTER_HEIGHT);
         return ImageLoader.getInstance().loadImageSync(url, size, DISPLAY_OPTIONS);
     }
+
+    @Override
+    public void onError(Throwable throwable) {
+        Toast.makeText(getActivity(), "Error: " + throwable.getMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showRecomendations(List<Image> recomendations) {
+        HeaderItem recomendationsHeader = new HeaderItem(getString(R.string.recomendations));
+        ImageAdapter imageAdapter = new ImageAdapter(new SinglePresenterSelector(new CardPresenter()), recomendations);
+        rowAdapter.add(new ListRow(recomendationsHeader, imageAdapter));
+    }
+
 }

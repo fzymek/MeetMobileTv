@@ -14,8 +14,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 
 import meet.mobile.R;
-import meet.mobile.application.MeetMobileTvApplication;
 import meet.mobile.model.Image;
+
+import static meet.mobile.tv.utils.TvImageUtils.getDefaultImageOptions;
 
 public class CardPresenter extends Presenter {
 
@@ -25,7 +26,7 @@ public class CardPresenter extends Presenter {
     private static Context mContext;
 
     static {
-        sDisplayImageOptions = MeetMobileTvApplication.getDefaultImageOptions()
+        sDisplayImageOptions = getDefaultImageOptions()
                 .showImageOnLoading(R.color.accent)
                 .displayer(new FadeInBitmapDisplayer(150))
                 .build();

@@ -23,8 +23,6 @@ public class MainActivity extends BaseActivity {
             getFragmentManager().beginTransaction()
                     .replace(R.id.content_frame, f, "main")
                     .commit();
-        } else {
-            Log.d("main", "no fragment");
         }
 
     }

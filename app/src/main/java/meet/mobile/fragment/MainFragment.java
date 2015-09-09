@@ -49,6 +49,8 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
 
     private final static String TAG = MainFragment.class.getSimpleName();
     private final static String CACHE = "cache";
+    public static final String DETAILS = "details";
+    public static final String SETTINGS = "settings";
 
     @InjectView(R.id.recycler)
     protected RecyclerView recyclerView;
@@ -173,13 +175,16 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
         //noinspection unchecked
         cacheFragment = (CacheFragment<Observable>) getFragmentManager().findFragmentByTag(CACHE);
         if (cacheFragment == null) {
+            Log.d(TAG, "adding cache fragment");
             cacheFragment = new CacheFragment<>();
             getFragmentManager().beginTransaction().add(cacheFragment, CACHE).commit();
+        } else {
+            Log.d(TAG, "cache fragment found");
         }
     }
 
     private void setupController(Bundle savedState) {
-        controller = new MainController(getActivity());
+        controller = new MainController(this);
         controller.initialize(this);
         controller.restoreState(savedState);
         controller.setCache(cacheFragment);
@@ -228,7 +233,7 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
     private void handleSettingsAction() {
         getFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.content_frame, SettingsFragment.newInstance(), "settings")
+                .replace(R.id.content_frame, SettingsFragment.newInstance(), SETTINGS)
                 .addToBackStack(null)
                 .commit();
     }
@@ -260,7 +265,7 @@ public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout
         DetailsFragment details = DetailsFragment.newInstance(image);
         getFragmentManager().beginTransaction()
                 .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                .replace(R.id.content_frame, details, "details")
+                .replace(R.id.content_frame, details, DETAILS)
                 .addToBackStack(null)
                 .commit();
     }
