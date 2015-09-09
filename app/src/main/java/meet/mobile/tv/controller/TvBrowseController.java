@@ -20,59 +20,59 @@ import rx.schedulers.Schedulers;
  */
 public class TvBrowseController extends FragmentController<TvMainUI> implements Observer<Pair<String, Result>> {
 
-	TvMainUI ui;
-	RestAdapter restAdapter;
-	GettyImagesAPI gettyImages;
+    TvMainUI ui;
+    RestAdapter restAdapter;
+    GettyImagesAPI gettyImages;
 
-	public TvBrowseController(Fragment fragment) {
-		super(fragment);
-	}
+    public TvBrowseController(Fragment fragment) {
+        super(fragment);
+    }
 
-	@Override
-	public void initialize(TvMainUI tvMainUI) {
-		this.ui = tvMainUI;
-		restAdapter = new RestAdapter.Builder()
-				.setEndpoint(API.GETTY_IMAGES_SEARCH_ENDPOINT)
-				.build();
-		gettyImages = restAdapter.create(GettyImagesAPI.class);
-	}
+    @Override
+    public void initialize(TvMainUI tvMainUI) {
+        this.ui = tvMainUI;
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint(API.GETTY_IMAGES_SEARCH_ENDPOINT)
+                .build();
+        gettyImages = restAdapter.create(GettyImagesAPI.class);
+    }
 
-	@Override
-	public void saveState(Object outState) {
+    @Override
+    public void saveState(Object outState) {
 
-	}
+    }
 
-	@Override
-	public void restoreState(Object savedState) {
+    @Override
+    public void restoreState(Object savedState) {
 
-	}
+    }
 
-	public void loadData() {
-		ui.onLoadingStarted();
-		String searchPhrases[] = getFragment().getActivity().getResources().getStringArray(R.array.animals_array);
+    public void loadData() {
+        ui.onLoadingStarted();
+        String searchPhrases[] = getFragment().getActivity().getResources().getStringArray(R.array.animals_array);
 
-		subscribeWith(
-				Observable.from(searchPhrases)
-						.concatMap(phrase -> Observable.just(new Pair<>(phrase, gettyImages.getImages(phrase).toBlocking().single())))
-						.subscribeOn(Schedulers.io())
-						.observeOn(AndroidSchedulers.mainThread())
-						.subscribe(this)
-		);
+        subscribeWith(
+                Observable.from(searchPhrases)
+                        .concatMap(phrase -> Observable.just(new Pair<>(phrase, gettyImages.getImages(phrase).toBlocking().single())))
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(this)
+        );
 
-	}
+    }
 
-	@Override
-	public void onCompleted() {
-		ui.onLoadingStopped();
-	}
+    @Override
+    public void onCompleted() {
+        ui.onLoadingStopped();
+    }
 
-	@Override
-	public void onError(Throwable throwable) {
-		ui.onError(throwable);
-	}
+    @Override
+    public void onError(Throwable throwable) {
+        ui.onError(throwable);
+    }
 
-	@Override
-	public void onNext(Pair<String, Result> resultPair) {
-		ui.displayImages(resultPair.first, resultPair.second.getImages());
-	}
+    @Override
+    public void onNext(Pair<String, Result> resultPair) {
+        ui.displayImages(resultPair.first, resultPair.second.getImages());
+    }
 }

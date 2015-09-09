@@ -8,16 +8,16 @@ import android.os.Build;
  * Created by Filip Zymek on 2015-06-22.
  */
 public class Utils {
-	private Utils() {
+    private Utils() {
 
-	}
+    }
 
-	public static boolean isLandscape(final Context context) {
-		int orientation = context.getResources().getConfiguration().orientation;
-		return orientation == Configuration.ORIENTATION_LANDSCAPE;
-	}
+    public static boolean isLandscape(final Context context) {
+        int orientation = context.getResources().getConfiguration().orientation;
+        return orientation == Configuration.ORIENTATION_LANDSCAPE;
+    }
 
-	public static boolean hasApi(final int apiLevel) {
-		return Build.VERSION.SDK_INT >= apiLevel;
-	}
+    public static boolean hasApi(final int apiLevel) {
+        return Build.VERSION.SDK_INT >= apiLevel;
+    }
 }

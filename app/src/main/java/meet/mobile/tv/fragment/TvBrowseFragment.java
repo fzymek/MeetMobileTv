@@ -29,28 +29,27 @@ import meet.mobile.tv.utils.BackgroundHelper;
  */
 public class TvBrowseFragment extends BrowseFragment implements TvMainUI {
 
-	private ArrayObjectAdapter rowsAdapter;
-	private BackgroundHelper bgHelper;
+    TvBrowseController controller;
+    private ArrayObjectAdapter rowsAdapter;
+    private BackgroundHelper bgHelper;
 
-	TvBrowseController controller;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initController(savedInstanceState);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		initController(savedInstanceState);
-	}
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init();
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		init();
-	}
-
-	@Override
-	public void onStop() {
-		bgHelper.release();
-		super.onStop();
-	}
+    @Override
+    public void onStop() {
+        bgHelper.release();
+        super.onStop();
+    }
 
     @Override
     public void onDestroy() {
@@ -60,39 +59,39 @@ public class TvBrowseFragment extends BrowseFragment implements TvMainUI {
         super.onDestroy();
     }
 
-	@Override
-	public void onError(Throwable error) {
-		Toast.makeText(getActivity(), "Error happened: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-	}
+    @Override
+    public void onError(Throwable error) {
+        Toast.makeText(getActivity(), "Error happened: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+    }
 
-	@Override
-	public void onLoadingStarted() {
+    @Override
+    public void onLoadingStarted() {
 
-	}
+    }
 
-	@Override
-	public void onLoadingStopped() {
+    @Override
+    public void onLoadingStopped() {
 
-	}
+    }
 
-	@Override
-	public void onDisplayImages(List<Image> images) {
-		throw new UnsupportedOperationException("not implemented");
-	}
+    @Override
+    public void onDisplayImages(List<Image> images) {
+        throw new UnsupportedOperationException("not implemented");
+    }
 
-	@Override
-	public void displayImages(String phrase, List<Image> images) {
-		if (getOnItemViewClickedListener() == null) {
-			setOnItemViewClickedListener(getDefaultItemViewClickedListener());
-		}
-		if (getOnItemViewSelectedListener() == null) {
-			setOnItemViewSelectedListener(getDefaultItemSelectedListener());
-		}
+    @Override
+    public void displayImages(String phrase, List<Image> images) {
+        if (getOnItemViewClickedListener() == null) {
+            setOnItemViewClickedListener(getDefaultItemViewClickedListener());
+        }
+        if (getOnItemViewSelectedListener() == null) {
+            setOnItemViewSelectedListener(getDefaultItemSelectedListener());
+        }
 
-		ImageAdapter adapter = new ImageAdapter(new SinglePresenterSelector(new CardPresenter()), images);
-		HeaderItem headerItem = new HeaderItem(phrase);
-		rowsAdapter.add(new ListRow(headerItem, adapter));
-	}
+        ImageAdapter adapter = new ImageAdapter(new SinglePresenterSelector(new CardPresenter()), images);
+        HeaderItem headerItem = new HeaderItem(phrase);
+        rowsAdapter.add(new ListRow(headerItem, adapter));
+    }
 
     private void initController(Bundle savedInstanceState) {
         controller = new TvBrowseController(this);
@@ -116,7 +115,7 @@ public class TvBrowseFragment extends BrowseFragment implements TvMainUI {
     protected OnItemViewClickedListener getDefaultItemViewClickedListener() {
         return (viewHolder, image, viewHolder2, row) -> {
             Intent intent = new Intent(getActivity(), TvDetailsActivity.class);
-            intent.putExtra(Image.INTENT_EXTRA_IMAGE, (Image)image);
+            intent.putExtra(Image.INTENT_EXTRA_IMAGE, (Image) image);
             startActivity(intent);
         };
     }

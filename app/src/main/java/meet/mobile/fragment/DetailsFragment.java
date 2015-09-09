@@ -35,103 +35,101 @@ import meet.mobile.ui.DetailsUI;
  */
 public class DetailsFragment extends Fragment implements DetailsUI {
 
-	private static final String TAG = DetailsFragment.class.getSimpleName();
+    public static final String ARG_IMAGE = "image";
+    private static final String TAG = DetailsFragment.class.getSimpleName();
+    @InjectView(R.id.play)
+    ImageView play;
+    @InjectView(R.id.image)
+    ImageView img;
+    @InjectView(R.id.details)
+    TextView details;
+    @InjectView(R.id.author)
+    TextView author;
+    @InjectView(R.id.date_created)
+    TextView dateCreated;
 
-	public static final String ARG_IMAGE = "image";
+    DetailsController controller;
 
-	@InjectView(R.id.play)
-	ImageView play;
-	@InjectView(R.id.image)
-	ImageView img;
-	@InjectView(R.id.details)
-	TextView details;
-	@InjectView(R.id.author)
-	TextView author;
-	@InjectView(R.id.date_created)
-	TextView dateCreated;
+    public static DetailsFragment newInstance(Image image) {
+        DetailsFragment fragment = new DetailsFragment();
+        Bundle args = new Bundle();
+        args.putParcelable(ARG_IMAGE, image);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
-	DetailsController controller;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initController(savedInstanceState);
+    }
 
-	public static DetailsFragment newInstance(Image image) {
-		DetailsFragment fragment = new DetailsFragment();
-		Bundle args = new Bundle();
-		args.putParcelable(ARG_IMAGE, image);
-		fragment.setArguments(args);
-		return fragment;
-	}
+    private void initController(Bundle savedInstanceState) {
+        controller = new DetailsController(this);
+        controller.initialize(this);
+        controller.restoreState(savedInstanceState);
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		initController(savedInstanceState);
-	}
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_details, container, false);
+    }
 
-	private void initController(Bundle savedInstanceState) {
-		controller = new DetailsController(this);
-		controller.initialize(this);
-		controller.restoreState(savedInstanceState);
-	}
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this, view);
+        controller.loadData(getArguments());
+    }
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.fragment_details, container, false);
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupActionBar();
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		ButterKnife.inject(this, view);
-		controller.loadData(getArguments());
-	}
+    private void setupActionBar() {
+        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayShowHomeEnabled(false);
+            supportActionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		setupActionBar();
-	}
+    @Override
+    public void showDetails(Image image) {
+        author.setText(image.getArtist());
+        details.setText(image.getCaption());
 
-	private void setupActionBar() {
-		ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-		if (supportActionBar != null) {
-			supportActionBar.setDisplayShowHomeEnabled(false);
-			supportActionBar.setDisplayHomeAsUpEnabled(true);
-		}
-	}
+        String dateFormat = formatDateCreated(image);
+        dateCreated.setText(dateFormat);
 
-	@Override
-	public void showDetails(Image image) {
-		author.setText(image.getArtist());
-		details.setText(image.getCaption());
+        ImageLoader.getInstance().cancelDisplayTask(img);
+        ImageLoader.getInstance().displayImage(image.getDisplayByType(Image.DisplaySizeType.PREVIEW).getUri(), img, ((BaseActivity) getActivity()).getDisplayImageOptions());
 
-		String dateFormat = formatDateCreated(image);
-		dateCreated.setText(dateFormat);
+        img.setOnClickListener((view) -> playVideo(image));
+    }
 
-		ImageLoader.getInstance().cancelDisplayTask(img);
-		ImageLoader.getInstance().displayImage(image.getDisplayByType(Image.DisplaySizeType.PREVIEW).getUri(), img, ((BaseActivity) getActivity()).getDisplayImageOptions());
+    private void playVideo(Image image) {
+        Intent playIntent = new Intent(getActivity(), PlayerActivity.class);
+        playIntent.putExtra(PlayerActivity.VIDEO_URL, image.getVideoUrl());
+        getActivity().startActivity(playIntent);
+    }
 
-		img.setOnClickListener((view) -> playVideo(image));
-	}
-
-	private void playVideo(Image image) {
-		Intent playIntent = new Intent(getActivity(), PlayerActivity.class);
-		playIntent.putExtra(PlayerActivity.VIDEO_URL, image.getVideoUrl());
-		getActivity().startActivity(playIntent);
-	}
-
-	@NonNull
-	private String formatDateCreated(Image image) {
-		SimpleDateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
-		SimpleDateFormat toFormat = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());
-		String dateFormat;
-		try {
-			Date date = fromFormat.parse(image.getDateCreated());
-			dateFormat = toFormat.format(date);
-		} catch (ParseException e) {
-			Log.d(TAG, "Error parsing date, using default");
-			dateFormat = toFormat.format(new Date());
-		}
-		return dateFormat;
-	}
+    @NonNull
+    private String formatDateCreated(Image image) {
+        SimpleDateFormat fromFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat toFormat = new SimpleDateFormat("HH:mm:ss dd.MM.yyyy", Locale.getDefault());
+        String dateFormat;
+        try {
+            Date date = fromFormat.parse(image.getDateCreated());
+            dateFormat = toFormat.format(date);
+        } catch (ParseException e) {
+            Log.d(TAG, "Error parsing date, using default");
+            dateFormat = toFormat.format(new Date());
+        }
+        return dateFormat;
+    }
 
 }

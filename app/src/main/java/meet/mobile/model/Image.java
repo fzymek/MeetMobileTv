@@ -13,131 +13,129 @@ import java.util.List;
  */
 public class Image implements Parcelable {
 
-	public static final String INTENT_EXTRA_IMAGE = "video_extra";
+    public static final String INTENT_EXTRA_IMAGE = "video_extra";
+    public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>() {
+        public Image createFromParcel(Parcel source) {
+            return new Image(source);
+        }
 
-	@SerializedName("id")
-	String id;
-	@SerializedName("caption")
-	String caption;
-	@SerializedName("title")
-	String title;
-	@SerializedName("artist")
-	String artist;
-	@SerializedName("collection_name")
-	String collectionName;
-	@SerializedName("date_created")
-	String dateCreated;
-	@SerializedName("display_sizes")
-	List<DisplaySize> displaySizes;
-	private String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+        public Image[] newArray(int size) {
+            return new Image[size];
+        }
+    };
+    @SerializedName("id")
+    String id;
+    @SerializedName("caption")
+    String caption;
+    @SerializedName("title")
+    String title;
+    @SerializedName("artist")
+    String artist;
+    @SerializedName("collection_name")
+    String collectionName;
+    @SerializedName("date_created")
+    String dateCreated;
+    @SerializedName("display_sizes")
+    List<DisplaySize> displaySizes;
+    private String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
 
-	public String getId() {
-		return id;
-	}
+    public Image() {
+    }
 
-	public String getCaption() {
-		return caption;
-	}
+    protected Image(Parcel in) {
+        this.id = in.readString();
+        this.caption = in.readString();
+        this.title = in.readString();
+        this.artist = in.readString();
+        this.collectionName = in.readString();
+        this.dateCreated = in.readString();
+        this.displaySizes = new ArrayList<>();
+        in.readTypedList(displaySizes, DisplaySize.CREATOR);
+        this.videoUrl = in.readString();
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getArtist() {
-		return artist;
-	}
+    public String getCaption() {
+        return caption;
+    }
 
-	public String getCollectionName() {
-		return collectionName;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public String getDateCreated() {
-		return dateCreated;
-	}
+    public String getArtist() {
+        return artist;
+    }
 
-	public List<DisplaySize> getDisplaySizes() {
-		return displaySizes;
-	}
+    public String getCollectionName() {
+        return collectionName;
+    }
 
-	public DisplaySize getDisplayByType(DisplaySizeType type) {
-		for (DisplaySize size : displaySizes) {
-			if (size.getName().equals(type.name)) {
-				return size;
-			}
-		}
-		return null;
-	}
+    public String getDateCreated() {
+        return dateCreated;
+    }
 
-	@Override
-	public String toString() {
-		return "Image{" +
-			"id='" + id + '\'' +
-			", caption='" + caption + '\'' +
-			", title='" + title + '\'' +
-			", artist='" + artist + '\'' +
-			", collectionName='" + collectionName + '\'' +
-			", dateCreated='" + dateCreated + '\'' +
-			", displaySizes=" + displaySizes +
-			", videoUrl=" + videoUrl +
-			'}';
-	}
+    public List<DisplaySize> getDisplaySizes() {
+        return displaySizes;
+    }
 
-	public String getVideoUrl() {
-		return videoUrl;
-	}
+    public DisplaySize getDisplayByType(DisplaySizeType type) {
+        for (DisplaySize size : displaySizes) {
+            if (size.getName().equals(type.name)) {
+                return size;
+            }
+        }
+        return null;
+    }
 
-	public enum DisplaySizeType {
-		THUMB("thumb"),
-		PREVIEW("preview"),
-		LARGE("comp");
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id='" + id + '\'' +
+                ", caption='" + caption + '\'' +
+                ", title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                ", collectionName='" + collectionName + '\'' +
+                ", dateCreated='" + dateCreated + '\'' +
+                ", displaySizes=" + displaySizes +
+                ", videoUrl=" + videoUrl +
+                '}';
+    }
 
-		protected final String name;
+    public String getVideoUrl() {
+        return videoUrl;
+    }
 
-		DisplaySizeType(String type) {
-			this.name= type;
-		}
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-	}
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.caption);
+        dest.writeString(this.title);
+        dest.writeString(this.artist);
+        dest.writeString(this.collectionName);
+        dest.writeString(this.dateCreated);
+        dest.writeTypedList(this.displaySizes);
+        dest.writeString(this.videoUrl);
+    }
 
-	@Override
-	public int describeContents() {
-		return 0;
-	}
+    public enum DisplaySizeType {
+        THUMB("thumb"),
+        PREVIEW("preview"),
+        LARGE("comp");
 
-	@Override
-	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeString(this.id);
-		dest.writeString(this.caption);
-		dest.writeString(this.title);
-		dest.writeString(this.artist);
-		dest.writeString(this.collectionName);
-		dest.writeString(this.dateCreated);
-		dest.writeTypedList(this.displaySizes);
-		dest.writeString(this.videoUrl);
-	}
+        protected final String name;
 
-	public Image() {
-	}
+        DisplaySizeType(String type) {
+            this.name = type;
+        }
 
-	protected Image(Parcel in) {
-		this.id = in.readString();
-		this.caption = in.readString();
-		this.title = in.readString();
-		this.artist = in.readString();
-		this.collectionName = in.readString();
-		this.dateCreated = in.readString();
-		this.displaySizes = new ArrayList<>();
-		in.readTypedList(displaySizes, DisplaySize.CREATOR);
-		this.videoUrl = in.readString();
-	}
-
-	public static final Parcelable.Creator<Image> CREATOR = new Parcelable.Creator<Image>() {
-		public Image createFromParcel(Parcel source) {
-			return new Image(source);
-		}
-
-		public Image[] newArray(int size) {
-			return new Image[size];
-		}
-	};
+    }
 }

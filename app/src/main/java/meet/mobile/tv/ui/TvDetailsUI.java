@@ -5,5 +5,5 @@ import meet.mobile.ui.DetailsUI;
 /**
  * Created by Filip on 2015-09-07.
  */
-public interface TvDetailsUI extends DetailsUI{
+public interface TvDetailsUI extends DetailsUI {
 }

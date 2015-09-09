@@ -12,8 +12,8 @@ import rx.Observable;
  */
 public interface GettyImagesAPI {
 
-	@Headers("Api-Key: " + API.CONSUMER_KEY)
-	@GET("/search/images?fields=detail_set,display_set")
-	Observable<Result> getImages(@Query("phrase") String phrase);
+    @Headers("Api-Key: " + API.CONSUMER_KEY)
+    @GET("/search/images?fields=detail_set,display_set")
+    Observable<Result> getImages(@Query("phrase") String phrase);
 
 }

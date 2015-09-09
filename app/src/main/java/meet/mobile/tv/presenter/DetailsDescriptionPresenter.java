@@ -8,15 +8,15 @@ import meet.mobile.model.Image;
  * Created by Filip on 2015-09-07.
  */
 public class DetailsDescriptionPresenter
-		extends AbstractDetailsDescriptionPresenter {
+        extends AbstractDetailsDescriptionPresenter {
 
-	@Override
-	protected void onBindDescription(ViewHolder viewHolder, Object itemData) {
-		Image details = (Image) itemData;
+    @Override
+    protected void onBindDescription(ViewHolder viewHolder, Object itemData) {
+        Image details = (Image) itemData;
 
-		// Here we provide static data for testing purposes:
-		viewHolder.getTitle().setText(details.getTitle());
-		viewHolder.getSubtitle().setText(details.getArtist());
-		viewHolder.getBody().setText(details.getCaption());
-	}
+        // Here we provide static data for testing purposes:
+        viewHolder.getTitle().setText(details.getTitle());
+        viewHolder.getSubtitle().setText(details.getArtist());
+        viewHolder.getBody().setText(details.getCaption());
+    }
 }

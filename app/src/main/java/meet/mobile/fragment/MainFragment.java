@@ -47,253 +47,253 @@ import static meet.mobile.utils.Utils.isLandscape;
  */
 public class MainFragment extends Fragment implements MainUI, SwipeRefreshLayout.OnRefreshListener {
 
-	private final static String TAG = MainFragment.class.getSimpleName();
-	private final static String CACHE = "cache";
+    private final static String TAG = MainFragment.class.getSimpleName();
+    private final static String CACHE = "cache";
 
-	@InjectView(R.id.recycler)
-	protected RecyclerView recyclerView;
+    @InjectView(R.id.recycler)
+    protected RecyclerView recyclerView;
 
-	CacheFragment<Observable> cacheFragment;
-	MainController controller;
-	ImagesAdapter adapter;
-	RecyclerView.LayoutManager linearLayoutManager;
-	RecyclerView.LayoutManager gridLayoutManager;
-	RecyclerView.LayoutManager staggeredLayoutManager;
+    CacheFragment<Observable> cacheFragment;
+    MainController controller;
+    ImagesAdapter adapter;
+    RecyclerView.LayoutManager linearLayoutManager;
+    RecyclerView.LayoutManager gridLayoutManager;
+    RecyclerView.LayoutManager staggeredLayoutManager;
 
-	public static MainFragment newInstance() {
-		MainFragment fragment = new MainFragment();
-		return fragment;
-	}
+    public static MainFragment newInstance() {
+        MainFragment fragment = new MainFragment();
+        return fragment;
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Log.d(TAG, "onCreate");
-		setHasOptionsMenu(true);
-		setupCache();
-		setupController(savedInstanceState);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
+        setHasOptionsMenu(true);
+        setupCache();
+        setupController(savedInstanceState);
+    }
 
-	@Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		Log.d(TAG, "onCreateView");
-		return inflater.inflate(R.layout.fragment_main, container, false);
-	}
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(TAG, "onCreateView");
+        return inflater.inflate(R.layout.fragment_main, container, false);
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		ButterKnife.inject(this, view);
-		setupLayoutManagers();
-		setupRecyclerView();
-	}
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ButterKnife.inject(this, view);
+        setupLayoutManagers();
+        setupRecyclerView();
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		Log.d(TAG, "onResume");
-		setupActionBar();
-		controller.loadData();
-	}
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+        setupActionBar();
+        controller.loadData();
+    }
 
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		ButterKnife.reset(this);
-	}
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        ButterKnife.reset(this);
+    }
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
-		inflater.inflate(R.menu.menu_main, menu);
-	}
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_main, menu);
+    }
 
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		super.onPrepareOptionsMenu(menu);
-		getStaggeredGridEnabled()
-			.subscribeOn(Schedulers.io())
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(isEnabled -> {
-				MenuItem item = menu.findItem(R.id.action_staggered_grid);
-				if (item != null) {
-					item.setChecked(isEnabled);
-				}
-			});
-	}
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        getStaggeredGridEnabled()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isEnabled -> {
+                    MenuItem item = menu.findItem(R.id.action_staggered_grid);
+                    if (item != null) {
+                        item.setChecked(isEnabled);
+                    }
+                });
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
-		int id = item.getItemId();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-		//noinspection SimplifiableIfStatement
-		switch (id) {
-			case R.id.action_settings:
-				handleSettingsAction();
-				return true;
-			case R.id.action_staggered_grid:
-				Log.d(TAG, "Clicked staggered grid action");
-				handleStaggeredGridCheckAction(item);
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
+        //noinspection SimplifiableIfStatement
+        switch (id) {
+            case R.id.action_settings:
+                handleSettingsAction();
+                return true;
+            case R.id.action_staggered_grid:
+                Log.d(TAG, "Clicked staggered grid action");
+                handleStaggeredGridCheckAction(item);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-	@Override
-	public void onError(Throwable error) {
-		Toast.makeText(getActivity(), getActivity().getApplicationContext().getString(R.string.error_happened), Toast.LENGTH_SHORT).show();
-		Log.e("MainFragment", "Error: ", error);
-	}
+    @Override
+    public void onError(Throwable error) {
+        Toast.makeText(getActivity(), getActivity().getApplicationContext().getString(R.string.error_happened), Toast.LENGTH_SHORT).show();
+        Log.e("MainFragment", "Error: ", error);
+    }
 
-	@Override
-	public void onLoadingStarted() {
-		adapter.clear();
+    @Override
+    public void onLoadingStarted() {
+        adapter.clear();
 
-	}
+    }
 
-	@Override
-	public void onLoadingStopped() {
-	}
+    @Override
+    public void onLoadingStopped() {
+    }
 
-	@Override
-	public void onDisplayImages(List<Image> images) {
-		adapter.setImages(images);
-	}
+    @Override
+    public void onDisplayImages(List<Image> images) {
+        adapter.setImages(images);
+    }
 
-	@Override
-	public void onRefresh() {
-		controller.refreshData();
-	}
+    @Override
+    public void onRefresh() {
+        controller.refreshData();
+    }
 
-	private void setupCache() {
-		//noinspection unchecked
-		cacheFragment = (CacheFragment<Observable>) getFragmentManager().findFragmentByTag(CACHE);
-		if (cacheFragment == null) {
-			cacheFragment = new CacheFragment<>();
-			getFragmentManager().beginTransaction().add(cacheFragment, CACHE).commit();
-		}
-	}
+    private void setupCache() {
+        //noinspection unchecked
+        cacheFragment = (CacheFragment<Observable>) getFragmentManager().findFragmentByTag(CACHE);
+        if (cacheFragment == null) {
+            cacheFragment = new CacheFragment<>();
+            getFragmentManager().beginTransaction().add(cacheFragment, CACHE).commit();
+        }
+    }
 
-	private void setupController(Bundle savedState) {
-		controller = new MainController(getActivity());
-		controller.initialize(this);
-		controller.restoreState(savedState);
-		controller.setCache(cacheFragment);
-	}
+    private void setupController(Bundle savedState) {
+        controller = new MainController(getActivity());
+        controller.initialize(this);
+        controller.restoreState(savedState);
+        controller.setCache(cacheFragment);
+    }
 
-	private void setupLayoutManagers() {
-		staggeredLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
-		((GridLayoutManager) staggeredLayoutManager).setSpanSizeLookup(getSpanSizeLookup());
+    private void setupLayoutManagers() {
+        staggeredLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+        ((GridLayoutManager) staggeredLayoutManager).setSpanSizeLookup(getSpanSizeLookup());
 
-		gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
+        gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.VERTICAL, false);
 
-		linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-	}
+        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+    }
 
-	private void setupRecyclerView() {
-		if (isLandscape(getActivity())) {
-			SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
-			boolean isStaggered = prefs.getBoolean(Config.KEY_PREF_USE_STAGGERED_GRID, false);
-			if (isStaggered) {
-				recyclerView.setLayoutManager(staggeredLayoutManager);
-			} else {
-				recyclerView.setLayoutManager(gridLayoutManager);
-			}
+    private void setupRecyclerView() {
+        if (isLandscape(getActivity())) {
+            SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+            boolean isStaggered = prefs.getBoolean(Config.KEY_PREF_USE_STAGGERED_GRID, false);
+            if (isStaggered) {
+                recyclerView.setLayoutManager(staggeredLayoutManager);
+            } else {
+                recyclerView.setLayoutManager(gridLayoutManager);
+            }
 
-		} else {
-			recyclerView.setLayoutManager(linearLayoutManager);
-		}
+        } else {
+            recyclerView.setLayoutManager(linearLayoutManager);
+        }
 
-		adapter = new ImagesAdapter(getActivity(), ((BaseActivity) getActivity()).getDisplayImageOptions());
-		adapter.setClickListener(this::handleImageClicked);
-		recyclerView.setAdapter(adapter);
-		if (hasApi(Build.VERSION_CODES.LOLLIPOP)) {
-			recyclerView.addItemDecoration(getItemDecoration());
-		}
-	}
-
-
-	private void setupActionBar() {
-		ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-		if (supportActionBar != null) {
-			supportActionBar.setDisplayShowHomeEnabled(true);
-			supportActionBar.setDisplayHomeAsUpEnabled(false);
-		}
-	}
-
-	private void handleSettingsAction() {
-		getFragmentManager().beginTransaction()
-			.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-			.replace(R.id.content_frame, SettingsFragment.newInstance(), "settings")
-			.addToBackStack(null)
-			.commit();
-	}
-
-	private void handleStaggeredGridCheckAction(final MenuItem item) {
-		getStaggeredGridEnabled()
-			.subscribeOn(Schedulers.io())
-			.observeOn(AndroidSchedulers.mainThread())
-			.subscribe(isEnabled -> {
-				if (isEnabled) {
-					item.setChecked(false);
-					setStaggeredGridEnabled(false)
-							.subscribeOn(Schedulers.io())
-							.observeOn(AndroidSchedulers.mainThread())
-							.subscribe((Void v) -> recyclerView.setLayoutManager(gridLayoutManager));
-				} else {
-					item.setChecked(true);
-					setStaggeredGridEnabled(true)
-							.subscribeOn(Schedulers.io())
-							.observeOn(AndroidSchedulers.mainThread())
-							.subscribe((Void v) -> recyclerView.setLayoutManager(staggeredLayoutManager));
-				}
-			});
-
-	}
-
-	private void handleImageClicked(int position, Image image) {
-
-		DetailsFragment details = DetailsFragment.newInstance(image);
-		getFragmentManager().beginTransaction()
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-				.replace(R.id.content_frame, details, "details")
-				.addToBackStack(null)
-				.commit();
-	}
-
-	private RecyclerView.ItemDecoration getItemDecoration() {
-		return new InsetDecoration(getActivity());
-	}
+        adapter = new ImagesAdapter(getActivity(), ((BaseActivity) getActivity()).getDisplayImageOptions());
+        adapter.setClickListener(this::handleImageClicked);
+        recyclerView.setAdapter(adapter);
+        if (hasApi(Build.VERSION_CODES.LOLLIPOP)) {
+            recyclerView.addItemDecoration(getItemDecoration());
+        }
+    }
 
 
-	private GridLayoutManager.SpanSizeLookup getSpanSizeLookup() {
-		return new GridLayoutManager.SpanSizeLookup() {
-			@Override
-			public int getSpanSize(int position) {
-				return position % 3 == 0 ? 2 : 1;
-			}
-		};
-	}
+    private void setupActionBar() {
+        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        if (supportActionBar != null) {
+            supportActionBar.setDisplayShowHomeEnabled(true);
+            supportActionBar.setDisplayHomeAsUpEnabled(false);
+        }
+    }
 
-	private Observable<Boolean> getStaggeredGridEnabled() {
-		return Observable.create(subscriber -> {
-			SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
-			subscriber.onNext(prefs.getBoolean(Config.KEY_PREF_USE_STAGGERED_GRID, false));
-			subscriber.onCompleted();
-		});
-	}
+    private void handleSettingsAction() {
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.content_frame, SettingsFragment.newInstance(), "settings")
+                .addToBackStack(null)
+                .commit();
+    }
 
-	private Observable<Void> setStaggeredGridEnabled(boolean isEnabled) {
-		return Observable.create(subscriber -> {
-			SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
-			prefs.edit().putBoolean(Config.KEY_PREF_USE_STAGGERED_GRID, isEnabled).apply();
-			subscriber.onNext(null);
-			subscriber.onCompleted();
-		});
-	}
+    private void handleStaggeredGridCheckAction(final MenuItem item) {
+        getStaggeredGridEnabled()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(isEnabled -> {
+                    if (isEnabled) {
+                        item.setChecked(false);
+                        setStaggeredGridEnabled(false)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe((Void v) -> recyclerView.setLayoutManager(gridLayoutManager));
+                    } else {
+                        item.setChecked(true);
+                        setStaggeredGridEnabled(true)
+                                .subscribeOn(Schedulers.io())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe((Void v) -> recyclerView.setLayoutManager(staggeredLayoutManager));
+                    }
+                });
+
+    }
+
+    private void handleImageClicked(int position, Image image) {
+
+        DetailsFragment details = DetailsFragment.newInstance(image);
+        getFragmentManager().beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.content_frame, details, "details")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    private RecyclerView.ItemDecoration getItemDecoration() {
+        return new InsetDecoration(getActivity());
+    }
+
+
+    private GridLayoutManager.SpanSizeLookup getSpanSizeLookup() {
+        return new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                return position % 3 == 0 ? 2 : 1;
+            }
+        };
+    }
+
+    private Observable<Boolean> getStaggeredGridEnabled() {
+        return Observable.create(subscriber -> {
+            SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+            subscriber.onNext(prefs.getBoolean(Config.KEY_PREF_USE_STAGGERED_GRID, false));
+            subscriber.onCompleted();
+        });
+    }
+
+    private Observable<Void> setStaggeredGridEnabled(boolean isEnabled) {
+        return Observable.create(subscriber -> {
+            SharedPreferences prefs = getActivity().getPreferences(Context.MODE_PRIVATE);
+            prefs.edit().putBoolean(Config.KEY_PREF_USE_STAGGERED_GRID, isEnabled).apply();
+            subscriber.onNext(null);
+            subscriber.onCompleted();
+        });
+    }
 
 }

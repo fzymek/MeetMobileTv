@@ -10,9 +10,12 @@ import meet.mobile.model.Image;
  */
 public interface MainUI {
 
-	void onError(Throwable error);
-	void onLoadingStarted();
-	void onLoadingStopped();
-	void onDisplayImages(List<Image> images);
+    void onError(Throwable error);
+
+    void onLoadingStarted();
+
+    void onLoadingStopped();
+
+    void onDisplayImages(List<Image> images);
 
 }

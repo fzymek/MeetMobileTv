@@ -12,5 +12,5 @@ import meet.mobile.dagger.scope.PerActivity;
 @PerActivity
 @Component(dependencies = ApplicationComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
-	Activity getActivity();
+    Activity getActivity();
 }

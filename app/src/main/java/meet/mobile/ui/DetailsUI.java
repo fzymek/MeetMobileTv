@@ -7,6 +7,6 @@ import meet.mobile.model.Image;
  */
 public interface DetailsUI {
 
-	void showDetails(Image image);
+    void showDetails(Image image);
 
 }

@@ -13,38 +13,38 @@ import meet.mobile.ui.DetailsUI;
  */
 public class DetailsController extends FragmentController<DetailsUI> {
 
-	private static final String IMAGE = "img_parcelable";
+    private static final String IMAGE = "img_parcelable";
 
-	DetailsUI ui;
-	Image image;
+    DetailsUI ui;
+    Image image;
 
-	public DetailsController(Fragment fragment) {
-		super(fragment);
-	}
+    public DetailsController(Fragment fragment) {
+        super(fragment);
+    }
 
-	@Override
-	public void initialize(DetailsUI detailsUI) {
-		this.ui = detailsUI;
-	}
+    @Override
+    public void initialize(DetailsUI detailsUI) {
+        this.ui = detailsUI;
+    }
 
-	@Override
-	public void saveState(Object outState) {
-		if (outState instanceof Bundle) {
-			Bundle state = (Bundle) outState;
-			state.putParcelable(IMAGE, image);
-		}
-	}
+    @Override
+    public void saveState(Object outState) {
+        if (outState instanceof Bundle) {
+            Bundle state = (Bundle) outState;
+            state.putParcelable(IMAGE, image);
+        }
+    }
 
-	@Override
-	public void restoreState(Object savedState) {
-		if (savedState instanceof Bundle) {
-			Bundle state = (Bundle) savedState;
-			image = state.getParcelable(IMAGE);
-		}
-	}
+    @Override
+    public void restoreState(Object savedState) {
+        if (savedState instanceof Bundle) {
+            Bundle state = (Bundle) savedState;
+            image = state.getParcelable(IMAGE);
+        }
+    }
 
-	public void loadData(Bundle arguments) {
-		this.image = arguments.getParcelable(DetailsFragment.ARG_IMAGE);
-		ui.showDetails(image);
-	}
+    public void loadData(Bundle arguments) {
+        this.image = arguments.getParcelable(DetailsFragment.ARG_IMAGE);
+        ui.showDetails(image);
+    }
 }

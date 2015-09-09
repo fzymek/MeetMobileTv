@@ -12,27 +12,27 @@ import meet.mobile.utils.SimpleCache;
  */
 public class CacheFragment<T> extends Fragment implements SimpleCache<T> {
 
-	LruCache<Object, T> cache;
+    LruCache<Object, T> cache;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setRetainInstance(true);
-		cache = new LruCache<>(3);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        cache = new LruCache<>(3);
+    }
 
-	@Override
-	public void put(Object key, T o) {
-		cache.put(key, o);
-	}
+    @Override
+    public void put(Object key, T o) {
+        cache.put(key, o);
+    }
 
-	@Override
-	public T get(Object key) {
-		return cache.get(key);
-	}
+    @Override
+    public T get(Object key) {
+        return cache.get(key);
+    }
 
-	@Override
-	public void clear() {
-		cache.evictAll();
-	}
+    @Override
+    public void clear() {
+        cache.evictAll();
+    }
 }

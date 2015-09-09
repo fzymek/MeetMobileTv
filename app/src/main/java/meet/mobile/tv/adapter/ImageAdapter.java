@@ -12,9 +12,9 @@ import meet.mobile.model.Image;
  */
 public class ImageAdapter extends ArrayObjectAdapter {
 
-	public ImageAdapter(PresenterSelector presenter, List<Image> images) {
-		super(presenter);
-		addAll(0, images);
-	}
+    public ImageAdapter(PresenterSelector presenter, List<Image> images) {
+        super(presenter);
+        addAll(0, images);
+    }
 
 }

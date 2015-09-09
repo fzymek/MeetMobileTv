@@ -20,13 +20,15 @@
     android:layout_height="match_parent"
     android:keepScreenOn="true">
 
-    <com.google.android.exoplayer.VideoSurfaceView android:id="@+id/surface_view"
+    <com.google.android.exoplayer.VideoSurfaceView
+        android:id="@+id/surface_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center" />
 
-    <View android:id="@+id/shutter"
+    <View
+        android:id="@+id/shutter"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"/>
+        android:background="@android:color/black" />
 </FrameLayout>

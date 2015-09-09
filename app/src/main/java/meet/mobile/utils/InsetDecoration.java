@@ -13,14 +13,14 @@ import meet.mobile.R;
  */
 public class InsetDecoration extends RecyclerView.ItemDecoration {
 
-	private int margin;
+    private int margin;
 
-	public InsetDecoration(Context context) {
-		margin = context.getResources().getDimensionPixelOffset(R.dimen.grid_item_margin);
-	}
+    public InsetDecoration(Context context) {
+        margin = context.getResources().getDimensionPixelOffset(R.dimen.grid_item_margin);
+    }
 
-	@Override
-	public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
-		outRect.set(margin, margin, margin, margin);
-	}
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        outRect.set(margin, margin, margin, margin);
+    }
 }

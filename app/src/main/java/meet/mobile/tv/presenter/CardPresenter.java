@@ -19,37 +19,16 @@ import meet.mobile.model.Image;
 
 public class CardPresenter extends Presenter {
 
+    protected static final DisplayImageOptions sDisplayImageOptions;
     private static int CARD_WIDTH = 150;
     private static int CARD_HEIGHT = 150;
-
     private static Context mContext;
-    protected static final DisplayImageOptions sDisplayImageOptions;
 
     static {
         sDisplayImageOptions = MeetMobileTvApplication.getDefaultImageOptions()
                 .showImageOnLoading(R.color.accent)
                 .displayer(new FadeInBitmapDisplayer(150))
                 .build();
-    }
-
-    static class ViewHolder extends Presenter.ViewHolder {
-
-        private ImageCardView mCardView;
-
-        public ViewHolder(View view) {
-            super(view);
-            mCardView = (ImageCardView) view;
-        }
-
-
-        public ImageCardView getCardView() {
-            return mCardView;
-        }
-
-        protected void updateCardViewImage(String url, ImageView imageView) {
-            ImageLoader.getInstance().cancelDisplayTask(imageView);
-            ImageLoader.getInstance().displayImage(url, imageView, sDisplayImageOptions);
-        }
     }
 
     @Override
@@ -79,6 +58,26 @@ public class CardPresenter extends Presenter {
     @Override
     public void onUnbindViewHolder(Presenter.ViewHolder viewHolder) {
 
+    }
+
+    static class ViewHolder extends Presenter.ViewHolder {
+
+        private ImageCardView mCardView;
+
+        public ViewHolder(View view) {
+            super(view);
+            mCardView = (ImageCardView) view;
+        }
+
+
+        public ImageCardView getCardView() {
+            return mCardView;
+        }
+
+        protected void updateCardViewImage(String url, ImageView imageView) {
+            ImageLoader.getInstance().cancelDisplayTask(imageView);
+            ImageLoader.getInstance().displayImage(url, imageView, sDisplayImageOptions);
+        }
     }
 
 }

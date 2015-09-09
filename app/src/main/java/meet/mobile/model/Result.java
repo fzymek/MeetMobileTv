@@ -9,24 +9,24 @@ import java.util.List;
  */
 public class Result {
 
-	@SerializedName("result_count")
-	Integer resultCount;
-	@SerializedName("images")
-	List<Image> images;
+    @SerializedName("result_count")
+    Integer resultCount;
+    @SerializedName("images")
+    List<Image> images;
 
-	public Integer getResultCount() {
-		return resultCount;
-	}
+    public Integer getResultCount() {
+        return resultCount;
+    }
 
-	public List<Image> getImages() {
-		return images;
-	}
+    public List<Image> getImages() {
+        return images;
+    }
 
-	@Override
-	public String toString() {
-		return "Result{" +
-			"resultCount=" + resultCount +
-			", images=" + images +
-			'}';
-	}
+    @Override
+    public String toString() {
+        return "Result{" +
+                "resultCount=" + resultCount +
+                ", images=" + images +
+                '}';
+    }
 }

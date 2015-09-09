@@ -1,16 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  xmlns:tools="http://schemas.android.com/tools"
-			  android:layout_width="match_parent"
-			  android:layout_height="match_parent"
-			  android:orientation="vertical"
-			  tools:context="pl.fzymek.mobile.activity.MainActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="pl.fzymek.mobile.activity.MainActivity">
 
-		<android.support.v7.widget.RecyclerView
-			android:id="@+id/recycler"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:paddingLeft="@dimen/padding_left_right"
-			android:paddingRight="@dimen/padding_left_right"
-			android:scrollbars="none"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/padding_left_right"
+        android:paddingRight="@dimen/padding_left_right"
+        android:scrollbars="none" />
 
 </LinearLayout>

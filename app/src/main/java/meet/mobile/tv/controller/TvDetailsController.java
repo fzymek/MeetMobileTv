@@ -2,8 +2,6 @@ package meet.mobile.tv.controller;
 
 import android.app.Fragment;
 
-import java.io.Serializable;
-
 import meet.mobile.controller.FragmentController;
 import meet.mobile.model.Image;
 import meet.mobile.tv.ui.TvDetailsUI;
@@ -13,28 +11,28 @@ import meet.mobile.tv.ui.TvDetailsUI;
  */
 public class TvDetailsController extends FragmentController<TvDetailsUI> {
 
-	TvDetailsUI ui;
+    TvDetailsUI ui;
 
-	public TvDetailsController(Fragment fragment) {
-		super(fragment);
-	}
+    public TvDetailsController(Fragment fragment) {
+        super(fragment);
+    }
 
-	@Override
-	public void initialize(TvDetailsUI tvDetailsUI) {
-		this.ui = tvDetailsUI;
-	}
+    @Override
+    public void initialize(TvDetailsUI tvDetailsUI) {
+        this.ui = tvDetailsUI;
+    }
 
-	@Override
-	public void saveState(Object outState) {
+    @Override
+    public void saveState(Object outState) {
 
-	}
+    }
 
-	@Override
-	public void restoreState(Object savedState) {
+    @Override
+    public void restoreState(Object savedState) {
 
-	}
+    }
 
-	public void loadDetails(Image image) {
-		ui.showDetails(image);
-	}
+    public void loadDetails(Image image) {
+        ui.showDetails(image);
+    }
 }

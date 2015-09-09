@@ -38,14 +38,12 @@ import rx.schedulers.Schedulers;
  */
 public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
 
-    TvDetailsController controller;
-
     private static final int POSTER_WIDTH = 274;
     private static final int POSTER_HEIGHT = 274;
     private static final int ACTION_PLAY = 1;
     private static final int ACTION_WATCH_LATER = 2;
     private static final DisplayImageOptions DISPLAY_OPTIONS = MeetMobileTvApplication.getTVBackgroundImageOptions().build();
-
+    TvDetailsController controller;
     BackgroundHelper bgHelper;
 
     @Override
@@ -87,7 +85,7 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
                 player.putExtra(Image.INTENT_EXTRA_IMAGE, image);
                 startActivity(player);
 
-            } else if (actionId == ACTION_WATCH_LATER){
+            } else if (actionId == ACTION_WATCH_LATER) {
                 Toast.makeText(getActivity(), getString(R.string.watch_later), Toast.LENGTH_SHORT).show();
             }
 

@@ -7,37 +7,37 @@ import android.app.Activity;
  */
 public abstract class ActivityController<UI> extends CompositeSubscriptionController<UI> {
 
-	protected Activity activity;
+    protected Activity activity;
 
-	protected ActivityController(Activity activity) {
-		this.activity = activity;
-	}
+    protected ActivityController(Activity activity) {
+        this.activity = activity;
+    }
 
-	public Activity getActivity() {
-		return activity;
-	}
+    public Activity getActivity() {
+        return activity;
+    }
 
-	public void setActivity(Activity activity) {
-		this.activity = activity;
-	}
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
-	@Override
-	public void onStart() {
+    @Override
+    public void onStart() {
 
-	}
+    }
 
-	@Override
-	public void onStop() {
+    @Override
+    public void onStop() {
 
-	}
+    }
 
-	@Override
-	public void onPause() {
+    @Override
+    public void onPause() {
 
-	}
+    }
 
-	@Override
-	public void onResume() {
+    @Override
+    public void onResume() {
 
-	}
+    }
 }

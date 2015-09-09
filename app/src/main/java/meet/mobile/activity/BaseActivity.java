@@ -17,24 +17,24 @@ import meet.mobile.dagger.modules.ActivityModule;
  */
 public abstract class BaseActivity extends AppCompatActivity {
 
-	@Inject
-	protected DisplayImageOptions options;
+    @Inject
+    protected DisplayImageOptions options;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getApplicationComponent().inject(this);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getApplicationComponent().inject(this);
+    }
 
-	public DisplayImageOptions getDisplayImageOptions() {
-		return options;
-	}
+    public DisplayImageOptions getDisplayImageOptions() {
+        return options;
+    }
 
-	protected ApplicationComponent getApplicationComponent() {
-		return ((MeetMobileTvApplication)getApplication()).getApplicationComponent();
-	}
+    protected ApplicationComponent getApplicationComponent() {
+        return ((MeetMobileTvApplication) getApplication()).getApplicationComponent();
+    }
 
-	protected ActivityModule getActivityModule() {
-		return new ActivityModule(this);
-	}
+    protected ActivityModule getActivityModule() {
+        return new ActivityModule(this);
+    }
 }

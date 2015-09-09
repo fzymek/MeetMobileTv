@@ -59,7 +59,7 @@ public class TvPlayerActivity extends Activity implements SurfaceHolder.Callback
 
         mVideo = getIntent().getParcelableExtra(Image.INTENT_EXTRA_IMAGE);
 
-        Log.d("PlayerActivity", "mVideo: "+ mVideo);
+        Log.d("PlayerActivity", "mVideo: " + mVideo);
         View root = findViewById(R.id.root);
         mediaController = new MediaController(this);
 
