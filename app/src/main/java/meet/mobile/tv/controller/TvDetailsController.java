@@ -1,6 +1,7 @@
 package meet.mobile.tv.controller;
 
 import android.app.Fragment;
+import android.util.Log;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -21,8 +22,10 @@ import rx.schedulers.Schedulers;
  */
 public class TvDetailsController extends FragmentController<TvDetailsUI> implements Observer<Result> {
 
+    private final static String TAG = TvDetailsController.class.getSimpleName();
+
     TvDetailsUI ui;
-    protected RestAdapter restAdapter;
+    RestAdapter restAdapter;
     GettyImagesAPI gettyImages;
 
     public TvDetailsController(Fragment fragment) {
@@ -53,6 +56,7 @@ public class TvDetailsController extends FragmentController<TvDetailsUI> impleme
     }
 
     public void loadRecomendations(String recomendation) {
+        Log.d(TAG, "recomendations requested");
         subscribeWith(
                 gettyImages.getImages(recomendation)
                 .subscribeOn(Schedulers.io())

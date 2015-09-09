@@ -15,6 +15,7 @@ import android.support.v17.leanback.widget.HeaderItem;
 import android.support.v17.leanback.widget.ListRow;
 import android.support.v17.leanback.widget.ListRowPresenter;
 import android.support.v17.leanback.widget.SinglePresenterSelector;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -45,6 +46,8 @@ import static meet.mobile.tv.utils.TvImageUtils.getTVBackgroundImageOptions;
  * Created by Filip on 2015-09-07.
  */
 public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
+
+    private final static String TAG = TvDetailsFragment.class.getSimpleName();
 
     private static final int POSTER_WIDTH = 274;
     private static final int POSTER_HEIGHT = 274;
@@ -107,7 +110,6 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
                 Toast.makeText(getActivity(), getString(R.string.watch_later), Toast.LENGTH_SHORT).show();
             }
 
-
         });
 
         final ClassPresenterSelector presenterSelector = new ClassPresenterSelector();
@@ -121,7 +123,9 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
             ((ArrayObjectAdapter) getAdapter()).add(detailsOverviewRow);
 
             //load recomendations
-            controller.loadRecomendations(RECOMENDATIONS[new Random().nextInt(RECOMENDATIONS.length)]);
+            String recomendation = RECOMENDATIONS[new Random().nextInt(RECOMENDATIONS.length)];
+            Log.d(TAG, "requesting recomendations for: "+ recomendation);
+            controller.loadRecomendations(recomendation);
 
         });
     }
@@ -180,6 +184,8 @@ public class TvDetailsFragment extends DetailsFragment implements TvDetailsUI {
 
     @Override
     public void showRecomendations(List<Image> recomendations) {
+
+        Log.d(TAG, "Got recomendations: "+ recomendations);
         HeaderItem recomendationsHeader = new HeaderItem(getString(R.string.recomendations));
         ImageAdapter imageAdapter = new ImageAdapter(new SinglePresenterSelector(new CardPresenter()), recomendations);
         rowAdapter.add(new ListRow(recomendationsHeader, imageAdapter));

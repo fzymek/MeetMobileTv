@@ -23,6 +23,8 @@ import rx.android.app.AppObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
+import static meet.mobile.tv.utils.TvImageUtils.getTVBackgroundImageOptions;
+
 public class BackgroundHelper {
 
 
@@ -39,7 +41,7 @@ public class BackgroundHelper {
     public BackgroundHelper(Activity mActivity) {
         this.mActivity = mActivity;
 
-        backgroundImageOptions = MeetMobileTvApplication.getTVBackgroundImageOptions()
+        backgroundImageOptions = getTVBackgroundImageOptions()
                 .postProcessor(new RsBlurProcessor(mActivity))
                 .build();
     }
