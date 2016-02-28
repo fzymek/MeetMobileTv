@@ -61,5 +61,13 @@ dependencies {
 }
 
 retrolambda {
-    jdk getProperty("JAVA_HOME")
+    jdk getJDKPath()
+}
+
+def getJDKPath() {
+    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        return getProperty("JAVA_HOME")
+    } else {
+        return System.getenv("JAVA_HOME")
+    }
 }
